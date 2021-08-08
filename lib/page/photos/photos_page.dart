@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pix/data/model/photo_response.dart';
-import 'package:pix/raw_data.dart';
+import 'package:pix/locator.dart';
+import 'package:pix/page/photos/bloc/photos_cubit.dart';
 import 'package:pix/widget/photo_widget.dart';
 import 'package:pix/widget/sliver_paged_staggered_grid_view.dart';
 
@@ -16,18 +16,26 @@ class PhotosPage extends StatefulWidget {
 class _PhotosPageState extends State<PhotosPage>
     with AutomaticKeepAliveClientMixin {
   late PagingController<int, Photo> _pagingController;
+  late PhotosCubit _cubit;
+  int _page = 1;
 
   @override
   void initState() {
     super.initState();
+    _cubit = PhotosCubit(ServiceLocator.provide());
+    _cubit.loadData(_page);
     _pagingController = PagingController<int, Photo>(firstPageKey: 1);
     _pagingController.addPageRequestListener((pageKey) {
-      Future.delayed(Duration(seconds: 1)).then((value) {
-        _pagingController.appendLastPage(photos.list);
-      });
+      _cubit.loadData(pageKey);
     });
-    Future.delayed(Duration(seconds: 1)).then((value) {
-      _pagingController.appendPage(photos.list, 2);
+    _cubit.stream.listen((state) {
+      if (state is PhotosSuccess) {
+        _page += 1;
+        _pagingController.appendPage(state.list, _page);
+      }
+      if(state is PhotosEmpty){
+        _pagingController.appendLastPage([]);
+      }
     });
   }
 
@@ -43,13 +51,12 @@ class _PhotosPageState extends State<PhotosPage>
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(child: Container()),
-
         SliverPagingStaggeredGridView(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<Photo>(
               itemBuilder: (context, item, index) {
-            return PhotoWidget(photo: item);
-          }, noMoreItemsIndicatorBuilder: (context) {
+                return PhotoWidget(photo: item);
+              }, noMoreItemsIndicatorBuilder: (context) {
             return Text('Finished');
           }),
         ),
@@ -60,4 +67,3 @@ class _PhotosPageState extends State<PhotosPage>
   @override
   bool get wantKeepAlive => true;
 }
-

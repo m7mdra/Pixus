@@ -25,8 +25,8 @@ class Photo {
   late String type;
   late String tags;
   late String previewURL;
-  int? previewWidth;
-  int? previewHeight;
+  late int previewWidth;
+  late int previewHeight;
   late String webformatURL;
   int? webformatWidth;
   int? webformatHeight;

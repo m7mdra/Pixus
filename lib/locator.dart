@@ -12,8 +12,20 @@ class ServiceLocator {
         baseUrl: "https://pixabay.com/api/",
         queryParameters: {'key': '13624680-de8a8b9720a4e9945c0f778b0'});
     var httpClient = Dio(options);
+    httpClient.interceptors.add(LogInterceptor(
+      error: true,
+      request: true,
+      requestBody: false,
+      requestHeader: false,
+      responseBody: true,
+      responseHeader: false,
+    ));
     var pixusClient = PixusClient(client: httpClient);
     getIt.registerSingleton(httpClient);
     getIt.registerSingleton(pixusClient);
+  }
+
+  static T provide<T extends Object>() {
+    return getIt.get<T>();
   }
 }

@@ -136,7 +136,7 @@ class _AppendedSliverGrid extends StatelessWidget {
             mainAxisSpacing: 0.0,
             crossAxisSpacing: 0.0,
             staggeredTileCount: itemCount,
-            staggeredTileBuilder: (index) => StaggeredTile.fit(4),
+            staggeredTileBuilder: (index) => StaggeredTile.fit(6),
           ));
     } else {
       return MultiSliver(children: [
@@ -147,7 +147,7 @@ class _AppendedSliverGrid extends StatelessWidget {
               mainAxisSpacing: 0.0,
               crossAxisSpacing: 0.0,
               staggeredTileCount: itemCount,
-              staggeredTileBuilder: (index) => StaggeredTile.fit(4),
+              staggeredTileBuilder: (index) => StaggeredTile.fit(6),
             )),
         SliverToBoxAdapter(
           child: appendixBuilder!(context),

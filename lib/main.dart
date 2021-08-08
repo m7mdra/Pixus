@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pix/photos_page.dart';
+import 'package:pix/locator.dart';
+import 'package:pix/page/photos/photos_page.dart';
 
 import 'breakpoints.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await ServiceLocator.init();
   runApp(MyApp());
 }
 
