@@ -1,9 +1,9 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:pix/data/model/photo_response.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 
 class PhotoWidget extends StatelessWidget {
   final Photo photo;
@@ -19,14 +19,12 @@ class PhotoWidget extends StatelessWidget {
         OctoImage(
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
-          image: NetworkImage(photo.webformatURL),
+          image: CachedNetworkImageProvider(photo.webformatURL),
           placeholderBuilder: (context) {
-            return Shimmer(
-              interval: Duration(milliseconds: 200),
-                child: Container(
-              width: photo.previewWidth.toDouble()/2,
-              height: photo.previewHeight.toDouble()/2,
-            ));
+            return CachedNetworkImage(
+                imageUrl: photo.previewURL,
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width);
           },
         ),
       ], mainAxisSize: MainAxisSize.min),

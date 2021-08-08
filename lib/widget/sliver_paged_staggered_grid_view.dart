@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'dart:math' as math;
-import 'package:sliver_tools/sliver_tools.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 /// Paged [SliverGrid] with progress and error indicators displayed as the last
 /// item.
@@ -12,8 +13,10 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 /// Useful for combining multiple scrollable pieces in your UI or if you need
 /// to add some widgets preceding or following your paged grid.
 ///
-class SliverPagingStaggeredGridView<PageKeyType, ItemType> extends StatelessWidget {
+class SliverPagingStaggeredGridView<PageKeyType, ItemType>
+    extends StatelessWidget {
   const SliverPagingStaggeredGridView({
+    required this.axisCellCount,
     required this.pagingController,
     required this.builderDelegate,
     this.addAutomaticKeepAlives = true,
@@ -25,6 +28,7 @@ class SliverPagingStaggeredGridView<PageKeyType, ItemType> extends StatelessWidg
     this.shrinkWrapFirstPageIndicators = false,
     Key? key,
   }) : super(key: key);
+  final int axisCellCount;
 
   /// Corresponds to [PagedSliverBuilder.pagingController].
   final PagingController<PageKeyType, ItemType> pagingController;
@@ -70,54 +74,55 @@ class SliverPagingStaggeredGridView<PageKeyType, ItemType> extends StatelessWidg
         completedListingBuilder:
             (context, itemBuilder, itemCount, noMoreItemsIndicatorBuilder) {
           return _AppendedSliverGrid(
-            itemBuilder: itemBuilder,
-            itemCount: itemCount,
-            appendixBuilder: noMoreItemsIndicatorBuilder,
-            showAppendixAsGridChild: showNoMoreItemsIndicatorAsGridChild,
-            addAutomaticKeepAlives: addAutomaticKeepAlives,
-            addSemanticIndexes: addSemanticIndexes,
-            addRepaintBoundaries: addRepaintBoundaries,
-          );
+              itemBuilder: itemBuilder,
+              itemCount: itemCount,
+              appendixBuilder: noMoreItemsIndicatorBuilder,
+              showAppendixAsGridChild: showNoMoreItemsIndicatorAsGridChild,
+              addAutomaticKeepAlives: addAutomaticKeepAlives,
+              addSemanticIndexes: addSemanticIndexes,
+              addRepaintBoundaries: addRepaintBoundaries,
+              axisCellCount: axisCellCount);
         },
         loadingListingBuilder:
             (context, itemBuilder, itemCount, progressIndicatorBuilder) {
           return _AppendedSliverGrid(
-            itemBuilder: itemBuilder,
-            itemCount: itemCount,
-            appendixBuilder: progressIndicatorBuilder,
-            showAppendixAsGridChild: showNewPageProgressIndicatorAsGridChild,
-            addAutomaticKeepAlives: addAutomaticKeepAlives,
-            addSemanticIndexes: addSemanticIndexes,
-            addRepaintBoundaries: addRepaintBoundaries,
-          );
+              itemBuilder: itemBuilder,
+              itemCount: itemCount,
+              appendixBuilder: progressIndicatorBuilder,
+              showAppendixAsGridChild: showNewPageProgressIndicatorAsGridChild,
+              addAutomaticKeepAlives: addAutomaticKeepAlives,
+              addSemanticIndexes: addSemanticIndexes,
+              addRepaintBoundaries: addRepaintBoundaries,
+              axisCellCount: axisCellCount);
         },
         errorListingBuilder:
             (context, itemBuilder, itemCount, errorIndicatorBuilder) {
           return _AppendedSliverGrid(
-            itemBuilder: itemBuilder,
-            itemCount: itemCount,
-            appendixBuilder: errorIndicatorBuilder,
-            showAppendixAsGridChild: showNewPageErrorIndicatorAsGridChild,
-            addAutomaticKeepAlives: addAutomaticKeepAlives,
-            addSemanticIndexes: addSemanticIndexes,
-            addRepaintBoundaries: addRepaintBoundaries,
-          );
+              itemBuilder: itemBuilder,
+              itemCount: itemCount,
+              appendixBuilder: errorIndicatorBuilder,
+              showAppendixAsGridChild: showNewPageErrorIndicatorAsGridChild,
+              addAutomaticKeepAlives: addAutomaticKeepAlives,
+              addSemanticIndexes: addSemanticIndexes,
+              addRepaintBoundaries: addRepaintBoundaries,
+              axisCellCount: axisCellCount);
         },
         shrinkWrapFirstPageIndicators: shrinkWrapFirstPageIndicators,
       );
 }
 
 class _AppendedSliverGrid extends StatelessWidget {
-  const _AppendedSliverGrid({
-    required this.itemBuilder,
-    required this.itemCount,
-    this.showAppendixAsGridChild = true,
-    this.appendixBuilder,
-    this.addAutomaticKeepAlives = true,
-    this.addRepaintBoundaries = true,
-    this.addSemanticIndexes = true,
-    Key? key,
-  }) : super(key: key);
+  const _AppendedSliverGrid(
+      {required this.axisCellCount,
+      required this.itemBuilder,
+      required this.itemCount,
+      this.showAppendixAsGridChild = true,
+      this.appendixBuilder,
+      this.addAutomaticKeepAlives = true,
+      this.addRepaintBoundaries = true,
+      this.addSemanticIndexes = true,
+      Key? key})
+      : super(key: key);
   final IndexedWidgetBuilder itemBuilder;
   final int itemCount;
   final bool showAppendixAsGridChild;
@@ -125,6 +130,8 @@ class _AppendedSliverGrid extends StatelessWidget {
   final bool addAutomaticKeepAlives;
   final bool addRepaintBoundaries;
   final bool addSemanticIndexes;
+  final int axisCellCount;
+
 //TODO: pass #staggeredTileBuilder by constructor
   @override
   Widget build(BuildContext context) {
@@ -133,10 +140,10 @@ class _AppendedSliverGrid extends StatelessWidget {
           delegate: _buildSliverDelegate(appendixBuilder: appendixBuilder),
           gridDelegate: SliverStaggeredGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 12,
-            mainAxisSpacing: 0.0,
-            crossAxisSpacing: 0.0,
+            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 4.0,
             staggeredTileCount: itemCount,
-            staggeredTileBuilder: (index) => StaggeredTile.fit(6),
+            staggeredTileBuilder: (index) => StaggeredTile.fit(axisCellCount),
           ));
     } else {
       return MultiSliver(children: [
@@ -144,10 +151,10 @@ class _AppendedSliverGrid extends StatelessWidget {
             delegate: _buildSliverDelegate(appendixBuilder: appendixBuilder),
             gridDelegate: SliverStaggeredGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 12,
-              mainAxisSpacing: 0.0,
-              crossAxisSpacing: 0.0,
+              mainAxisSpacing: 4.0,
+              crossAxisSpacing: 4.0,
               staggeredTileCount: itemCount,
-              staggeredTileBuilder: (index) => StaggeredTile.fit(6),
+              staggeredTileBuilder: (index) => StaggeredTile.fit(axisCellCount),
             )),
         SliverToBoxAdapter(
           child: appendixBuilder!(context),
@@ -184,20 +191,20 @@ class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
     bool addSemanticIndexes = true,
     SemanticIndexCallback? semanticIndexCallback,
   }) : super(
-    appendixBuilder == null
-        ? builder
-        : (context, index) {
-      if (index == childCount) {
-        return appendixBuilder(context);
-      }
-      return builder(context, index);
-    },
-    childCount: appendixBuilder == null ? childCount : childCount + 1,
-    addAutomaticKeepAlives: addAutomaticKeepAlives,
-    addRepaintBoundaries: addRepaintBoundaries,
-    addSemanticIndexes: addSemanticIndexes,
-    semanticIndexCallback: semanticIndexCallback ?? (_, index) => index,
-  );
+          appendixBuilder == null
+              ? builder
+              : (context, index) {
+                  if (index == childCount) {
+                    return appendixBuilder(context);
+                  }
+                  return builder(context, index);
+                },
+          childCount: appendixBuilder == null ? childCount : childCount + 1,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+          semanticIndexCallback: semanticIndexCallback ?? (_, index) => index,
+        );
 
   AppendedSliverChildBuilderDelegate.separated({
     required IndexedWidgetBuilder builder,
@@ -208,22 +215,22 @@ class AppendedSliverChildBuilderDelegate extends SliverChildBuilderDelegate {
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
   }) : this(
-    builder: (context, index) {
-      final itemIndex = index ~/ 2;
-      if (index.isEven) {
-        return builder(context, itemIndex);
-      }
+          builder: (context, index) {
+            final itemIndex = index ~/ 2;
+            if (index.isEven) {
+              return builder(context, itemIndex);
+            }
 
-      return separatorBuilder(context, itemIndex);
-    },
-    childCount: math.max(
-      0,
-      childCount * 2 - (appendixBuilder != null ? 0 : 1),
-    ),
-    appendixBuilder: appendixBuilder,
-    addAutomaticKeepAlives: addAutomaticKeepAlives,
-    addRepaintBoundaries: addRepaintBoundaries,
-    addSemanticIndexes: addSemanticIndexes,
-    semanticIndexCallback: (_, index) => index.isEven ? index ~/ 2 : null,
-  );
+            return separatorBuilder(context, itemIndex);
+          },
+          childCount: math.max(
+            0,
+            childCount * 2 - (appendixBuilder != null ? 0 : 1),
+          ),
+          appendixBuilder: appendixBuilder,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+          semanticIndexCallback: (_, index) => index.isEven ? index ~/ 2 : null,
+        );
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pix/breakpoints.dart';
 import 'package:pix/data/model/photo_response.dart';
 import 'package:pix/locator.dart';
 import 'package:pix/page/photos/bloc/photos_cubit.dart';
@@ -33,7 +35,7 @@ class _PhotosPageState extends State<PhotosPage>
         _page += 1;
         _pagingController.appendPage(state.list, _page);
       }
-      if(state is PhotosEmpty){
+      if (state is PhotosEmpty) {
         _pagingController.appendLastPage([]);
       }
     });
@@ -48,22 +50,29 @@ class _PhotosPageState extends State<PhotosPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(child: Container()),
-        SliverPagingStaggeredGridView(
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<Photo>(
-              itemBuilder: (context, item, index) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(child: Container()),
+            SliverPagingStaggeredGridView(
+
+              pagingController: _pagingController,
+              builderDelegate: PagedChildBuilderDelegate<Photo>(
+                  itemBuilder: (context, item, index) {
                 return PhotoWidget(photo: item);
               }, noMoreItemsIndicatorBuilder: (context) {
-            return Text('Finished');
-          }),
-        ),
-      ],
+                return Text('Finished');
+              }),
+              axisCellCount: calculateColumnRatio(constraints),
+            ),
+          ],
+        );
+      },
     );
   }
 
   @override
   bool get wantKeepAlive => true;
 }
+

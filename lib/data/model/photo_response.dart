@@ -28,8 +28,8 @@ class Photo {
   late int previewWidth;
   late int previewHeight;
   late String webformatURL;
-  int? webformatWidth;
-  int? webformatHeight;
+  late int webformatWidth;
+  late int webformatHeight;
   String? largeImageURL;
   int? imageWidth;
   int? imageHeight;

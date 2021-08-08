@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage> {
     Container(color: Colors.blueGrey),
     Container(color: Colors.blue)
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +47,6 @@ class _HomePageState extends State<HomePage> {
         builder: (context, dimens) {
           int columnRatio = calculateColumnRatio(dimens);
           if (dimens.maxWidth <= kMobileBreakpoint) {
-
             return Column(
               children: [
                 Flexible(
@@ -131,21 +131,5 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
-  }
-
-  int calculateColumnRatio(BoxConstraints dimens) {
-    var columnRatio = 0;
-    if (dimens.maxWidth <= kMobileBreakpoint) {
-      columnRatio = 6;
-    } else if (dimens.maxWidth > kMobileBreakpoint &&
-        dimens.maxWidth <= kTabletBreakpoint) {
-      columnRatio = 4;
-    } else if (dimens.maxWidth > kTabletBreakpoint &&
-        dimens.maxWidth <= kDesktopBreakPoint) {
-      columnRatio = 3;
-    } else {
-      columnRatio = 2;
-    }
-    return columnRatio;
   }
 }
