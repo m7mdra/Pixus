@@ -1,12 +1,9 @@
 class PhotoResponse {
   int? total;
   int? totalHits;
-  List<Photo>? list;
+  List<Photo> list = [];
 
-  PhotoResponse({
-      this.total, 
-      this.totalHits, 
-      this.list});
+  PhotoResponse({this.total, this.totalHits, this.list = const []});
 
   PhotoResponse.fromJson(dynamic json) {
     total = json["total"];
@@ -14,32 +11,23 @@ class PhotoResponse {
     if (json["hits"] != null) {
       list = [];
       json["hits"].forEach((v) {
-        list?.add(Photo.fromJson(v));
+        list.add(Photo.fromJson(v));
       });
     }
   }
 
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["total"] = total;
-    map["totalHits"] = totalHits;
-    if (list != null) {
-      map["hits"] = list?.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
 
 }
 
 class Photo {
-  int? id;
-  String? pageURL;
-  String? type;
-  String? tags;
-  String? previewURL;
+  late int id;
+  late String pageURL;
+  late String type;
+  late String tags;
+  late String previewURL;
   int? previewWidth;
   int? previewHeight;
-  String? webformatURL;
+  late String webformatURL;
   int? webformatWidth;
   int? webformatHeight;
   String? largeImageURL;
@@ -55,29 +43,7 @@ class Photo {
   String? user;
   String? userImageURL;
 
-  Photo({
-      this.id, 
-      this.pageURL, 
-      this.type, 
-      this.tags, 
-      this.previewURL, 
-      this.previewWidth, 
-      this.previewHeight, 
-      this.webformatURL, 
-      this.webformatWidth, 
-      this.webformatHeight, 
-      this.largeImageURL, 
-      this.imageWidth, 
-      this.imageHeight, 
-      this.imageSize, 
-      this.views, 
-      this.downloads, 
-      this.collections, 
-      this.likes, 
-      this.comments, 
-      this.userId, 
-      this.user, 
-      this.userImageURL});
+
 
   Photo.fromJson(dynamic json) {
     id = json["id"];
@@ -130,5 +96,4 @@ class Photo {
     map["userImageURL"] = userImageURL;
     return map;
   }
-
 }
