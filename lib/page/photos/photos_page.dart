@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pix/breakpoints.dart';
 import 'package:pix/data/model/photo_response.dart';
 import 'package:pix/locator.dart';
 import 'package:pix/page/photos/bloc/photos_cubit.dart';
+import 'package:pix/page/photos/bloc/photos_state.dart';
 import 'package:pix/widget/photo_widget.dart';
 import 'package:pix/widget/search_widget.dart';
 import 'package:pix/widget/sliver_paged_staggered_grid_view.dart';
+
+import 'bloc/photos_cubit.dart';
 
 class PhotosPage extends StatefulWidget {
   const PhotosPage({Key? key}) : super(key: key);
@@ -58,7 +60,7 @@ class _PhotosPageState extends State<PhotosPage>
         } else {
           return CustomScrollView(
             slivers: [
-              SliverPersistentHeader(delegate: SearchFilterHeaderDelegate(),pinned: false,floating: true,),
+              SliverToBoxAdapter(),
               SliverPagingStaggeredGridView(
                 pagingController: _pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Photo>(
@@ -79,15 +81,15 @@ class _PhotosPageState extends State<PhotosPage>
   @override
   bool get wantKeepAlive => true;
 }
-class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate{
+
+class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Theme.of(context).primaryColor,
-      child: Row(children: [
-        Flexible(child: Container()),
-        SearchWidget()
-      ],),
+      child: Row(
+        children: [Flexible(child: Container()), SearchWidget()],
+      ),
     );
   }
 
@@ -101,5 +103,4 @@ class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate{
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
     return true;
   }
-
 }

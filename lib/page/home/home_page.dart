@@ -3,6 +3,7 @@ import 'package:pix/breakpoints.dart';
 import 'package:pix/page/home/home_desktop.dart';
 import 'package:pix/page/home/home_mobile.dart';
 import 'package:pix/page/photos/photos_page.dart';
+import 'package:pix/page/videos/videos_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   var _pageController = PageController(keepPage: true);
   var _pages = [
     const PhotosPage(),
-    Container(color: Colors.green),
+    const VideosPage(),
     Container(color: Colors.blueGrey),
     Container(color: Colors.blue)
   ];

@@ -5,7 +5,6 @@ extension OrderExtension on Order {
     switch (this) {
       case Order.popular:
         return "popular";
-        break;
       case Order.latest:
         return "latest";
     }

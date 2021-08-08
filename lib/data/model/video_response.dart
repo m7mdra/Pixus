@@ -1,12 +1,7 @@
 class VideoResponse {
   int? total;
   int? totalHits;
-  List<Video>? list;
-
-  VideoResponse({
-      this.total, 
-      this.totalHits, 
-      this.list});
+  List<Video> list = [];
 
   VideoResponse.fromJson(dynamic json) {
     total = json["total"];
@@ -14,7 +9,7 @@ class VideoResponse {
     if (json["hits"] != null) {
       list = [];
       json["hits"].forEach((v) {
-        list?.add(Video.fromJson(v));
+        list.add(Video.fromJson(v));
       });
     }
   }
@@ -23,12 +18,9 @@ class VideoResponse {
     var map = <String, dynamic>{};
     map["total"] = total;
     map["totalHits"] = totalHits;
-    if (list != null) {
-      map["hits"] = list?.map((v) => v.toJson()).toList();
-    }
+    map["hits"] = list.map((v) => v.toJson()).toList();
     return map;
   }
-
 }
 
 class Video {
@@ -37,8 +29,8 @@ class Video {
   String? type;
   String? tags;
   int? duration;
-  String? pictureId;
-  Urls? urls;
+  late String pictureId;
+  late Urls? urls;
   int? views;
   int? downloads;
   int? likes;
@@ -46,22 +38,6 @@ class Video {
   int? userId;
   String? user;
   String? userImageURL;
-
-  Video({
-      this.id, 
-      this.pageURL, 
-      this.type, 
-      this.tags, 
-      this.duration, 
-      this.pictureId, 
-      this.urls,
-      this.views, 
-      this.downloads, 
-      this.likes, 
-      this.comments, 
-      this.userId, 
-      this.user, 
-      this.userImageURL});
 
   Video.fromJson(dynamic json) {
     id = json["id"];
@@ -100,20 +76,13 @@ class Video {
     map["userImageURL"] = userImageURL;
     return map;
   }
-
 }
 
 class Urls {
-  Large? large;
-  Medium? medium;
-  Small? small;
-  Tiny? tiny;
-
-  Urls({
-      this.large, 
-      this.medium, 
-      this.small, 
-      this.tiny});
+  late Large? large;
+  late Medium? medium;
+  late Small? small;
+  late Tiny? tiny;
 
   Urls.fromJson(dynamic json) {
     large = json["large"] != null ? Large.fromJson(json["large"]) : null;
@@ -138,20 +107,13 @@ class Urls {
     }
     return map;
   }
-
 }
 
 class Tiny {
-  String? url;
+ late String url;
   int? width;
   int? height;
   int? size;
-
-  Tiny({
-      this.url, 
-      this.width, 
-      this.height, 
-      this.size});
 
   Tiny.fromJson(dynamic json) {
     url = json["url"];
@@ -168,20 +130,14 @@ class Tiny {
     map["size"] = size;
     return map;
   }
-
 }
 
 class Small {
-  String? url;
+ late String url;
   int? width;
   int? height;
   int? size;
 
-  Small({
-      this.url, 
-      this.width, 
-      this.height, 
-      this.size});
 
   Small.fromJson(dynamic json) {
     url = json["url"];
@@ -198,20 +154,14 @@ class Small {
     map["size"] = size;
     return map;
   }
-
 }
 
 class Medium {
-  String? url;
+  late String url;
   int? width;
   int? height;
   int? size;
 
-  Medium({
-      this.url, 
-      this.width, 
-      this.height, 
-      this.size});
 
   Medium.fromJson(dynamic json) {
     url = json["url"];
@@ -228,7 +178,6 @@ class Medium {
     map["size"] = size;
     return map;
   }
-
 }
 
 class Large {
@@ -237,11 +186,7 @@ class Large {
   int? height;
   int? size;
 
-  Large({
-      this.url, 
-      this.width, 
-      this.height, 
-      this.size});
+  Large({this.url, this.width, this.height, this.size});
 
   Large.fromJson(dynamic json) {
     url = json["url"];
@@ -258,5 +203,4 @@ class Large {
     map["size"] = size;
     return map;
   }
-
 }

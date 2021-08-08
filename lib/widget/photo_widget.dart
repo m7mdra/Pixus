@@ -13,21 +13,17 @@ class PhotoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Container(
-      decoration: BoxDecoration(),
-      child: Column(children: [
-        OctoImage(
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-          image: CachedNetworkImageProvider(photo.webformatURL),
-          placeholderBuilder: (context) {
-            return CachedNetworkImage(
-                imageUrl: photo.previewURL,
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width);
-          },
-        ),
-      ], mainAxisSize: MainAxisSize.min),
+      child: OctoImage(
+        width: width,
+        fit: BoxFit.cover,
+        image: CachedNetworkImageProvider(photo.webformatURL),
+        placeholderBuilder: (context) {
+          return CachedNetworkImage(
+              imageUrl: photo.previewURL, fit: BoxFit.cover, width: width);
+        },
+      ),
     );
   }
 }

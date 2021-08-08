@@ -1,4 +1,7 @@
-part of 'photos_cubit.dart';
+
+
+import 'package:flutter/foundation.dart';
+import 'package:pix/data/model/photo_response.dart';
 
 @immutable
 abstract class PhotosState {}

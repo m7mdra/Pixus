@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:pix/data/model/photo_response.dart';
-import 'package:pix/data/pixus_client.dart';
 
-part 'photos_state.dart';
+import 'package:pix/data/pixus_client.dart';
+import 'package:pix/page/photos/bloc/photos_state.dart';
+
 
 class PhotosCubit extends Cubit<PhotosState> {
   final PixusClient _client;
