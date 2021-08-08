@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pix/photos_page.dart';
 
 import 'breakpoints.dart';
 
@@ -29,7 +30,12 @@ class _HomePageState extends State<HomePage> {
 
   //TODO: dispose variable.
   var _pageController = PageController(keepPage: true);
-
+  var pages = [
+    const PhotosPage(),
+    Container(color: Colors.green),
+    Container(color: Colors.blueGrey),
+    Container(color: Colors.blue)
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,16 +43,12 @@ class _HomePageState extends State<HomePage> {
         builder: (context, dimens) {
           int columnRatio = calculateColumnRatio(dimens);
           if (dimens.maxWidth <= kMobileBreakpoint) {
+
             return Column(
               children: [
                 Flexible(
                   child: PageView(
-                    children: [
-                      Container(color: Colors.grey),
-                      Container(color: Colors.green),
-                      Container(color: Colors.blueGrey),
-                      Container(color: Colors.blue)
-                    ],
+                    children: pages,
                     onPageChanged: (index) {
                       setState(() {
                         _selectedItemIndex = index;
@@ -110,12 +112,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Flexible(
                   child: PageView(
-                    children: [
-                      Container(color: Colors.grey),
-                      Container(color: Colors.green),
-                      Container(color: Colors.blueGrey),
-                      Container(color: Colors.blue),
-                    ],
+                    children: pages,
                     onPageChanged: (index) {
                       setState(() {
                         _selectedItemIndex = index;
