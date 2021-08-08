@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pix/breakpoints.dart';
 import 'package:pix/data/model/photo_response.dart';
 import 'package:pix/locator.dart';
 import 'package:pix/page/photos/bloc/photos_cubit.dart';
 import 'package:pix/widget/photo_widget.dart';
+import 'package:pix/widget/search_widget.dart';
 import 'package:pix/widget/sliver_paged_staggered_grid_view.dart';
 
 class PhotosPage extends StatefulWidget {
@@ -52,22 +53,25 @@ class _PhotosPageState extends State<PhotosPage>
     super.build(context);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        return CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(child: Container()),
-            SliverPagingStaggeredGridView(
-
-              pagingController: _pagingController,
-              builderDelegate: PagedChildBuilderDelegate<Photo>(
-                  itemBuilder: (context, item, index) {
-                return PhotoWidget(photo: item);
-              }, noMoreItemsIndicatorBuilder: (context) {
-                return Text('Finished');
-              }),
-              axisCellCount: calculateColumnRatio(constraints),
-            ),
-          ],
-        );
+        if (constraints.maxWidth <= kMobileBreakpoint) {
+          return Text('mega');
+        } else {
+          return CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(delegate: SearchFilterHeaderDelegate(),pinned: false,floating: true,),
+              SliverPagingStaggeredGridView(
+                pagingController: _pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Photo>(
+                    itemBuilder: (context, item, index) {
+                  return PhotoWidget(photo: item);
+                }, noMoreItemsIndicatorBuilder: (context) {
+                  return Text('Finished');
+                }),
+                axisCellCount: calculateColumnRatio(constraints),
+              ),
+            ],
+          );
+        }
       },
     );
   }
@@ -75,4 +79,27 @@ class _PhotosPageState extends State<PhotosPage>
   @override
   bool get wantKeepAlive => true;
 }
+class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate{
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      child: Row(children: [
+        Flexible(child: Container()),
+        SearchWidget()
+      ],),
+    );
+  }
 
+  @override
+  double get maxExtent => 80;
+
+  @override
+  double get minExtent => 70;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return true;
+  }
+
+}

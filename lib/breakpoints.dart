@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const kMobileBreakpoint = 576;
+const kMobileBreakpoint = 480;
 const kTabletBreakpoint = 1024;
 const kDesktopBreakPoint = 1366;
 

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pix/locator.dart';
-import 'package:pix/page/photos/photos_page.dart';
+import 'package:pix/page/home/home_page.dart';
 
-import 'breakpoints.dart';
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ServiceLocator.init();
   runApp(MyApp());
@@ -16,120 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pixus',
+
       theme: ThemeData(
-          primaryColor: Color(0xffFFECDC), accentColor: Color(0xffFFA500)),
+          primarySwatch: Colors.deepOrange,
+          accentColor: Colors.deepOrangeAccent),
       home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  var _selectedItemIndex = 0;
-
-  //TODO: dispose variable.
-  var _pageController = PageController(keepPage: true);
-  var pages = [
-    const PhotosPage(),
-    Container(color: Colors.green),
-    Container(color: Colors.blueGrey),
-    Container(color: Colors.blue)
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, dimens) {
-          int columnRatio = calculateColumnRatio(dimens);
-          if (dimens.maxWidth <= kMobileBreakpoint) {
-            return Column(
-              children: [
-                Flexible(
-                  child: PageView(
-                    children: pages,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _selectedItemIndex = index;
-                      });
-                    },
-                    controller: _pageController,
-                  ),
-                ),
-                BottomNavigationBar(
-                  onTap: (index) {
-                    setState(() {
-                      _pageController.jumpToPage(index);
-
-                      _selectedItemIndex = index;
-                    });
-                  },
-                  type: BottomNavigationBarType.fixed,
-                  items: [
-                    BottomNavigationBarItem(
-                        icon: Icon(FontAwesomeIcons.solidImages),
-                        label: 'Images'),
-                    BottomNavigationBarItem(
-                        icon: Icon(FontAwesomeIcons.video), label: 'Videos'),
-                    BottomNavigationBarItem(
-                        icon: Icon(FontAwesomeIcons.th), label: 'Categories'),
-                    BottomNavigationBarItem(
-                        icon: Icon(FontAwesomeIcons.cog), label: 'Settings'),
-                  ],
-                  currentIndex: _selectedItemIndex,
-                )
-              ],
-            );
-          } else {
-            return Row(
-              children: [
-                NavigationRail(
-                  minWidth: 60,
-                  onDestinationSelected: (index) {
-                    setState(() {
-                      _pageController.jumpToPage(index);
-
-                      _selectedItemIndex = index;
-                    });
-                  },
-                  selectedIndex: _selectedItemIndex,
-                  destinations: [
-                    NavigationRailDestination(
-                        icon: Icon(FontAwesomeIcons.solidImage),
-                        label: Text('Images')),
-                    NavigationRailDestination(
-                        icon: Icon(FontAwesomeIcons.video),
-                        label: Text('Videos')),
-                    NavigationRailDestination(
-                        icon: Icon(FontAwesomeIcons.th),
-                        label: Text('Categories')),
-                    NavigationRailDestination(
-                        icon: Icon(FontAwesomeIcons.cog),
-                        label: Text('Settings')),
-                  ],
-                  labelType: NavigationRailLabelType.all,
-                ),
-                Flexible(
-                  child: PageView(
-                    children: pages,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _selectedItemIndex = index;
-                      });
-                    },
-                    controller: _pageController,
-                    scrollDirection: Axis.vertical,
-                  ),
-                ),
-              ],
-            );
-          }
-        },
-      ),
     );
   }
 }

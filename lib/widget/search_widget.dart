@@ -9,7 +9,6 @@ class SearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(32),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8)),
       child: Container(
