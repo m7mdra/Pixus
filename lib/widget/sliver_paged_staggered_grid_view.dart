@@ -132,7 +132,6 @@ class _AppendedSliverGrid extends StatelessWidget {
   final bool addSemanticIndexes;
   final int axisCellCount;
 
-//TODO: pass #staggeredTileBuilder by constructor
   @override
   Widget build(BuildContext context) {
     if (showAppendixAsGridChild == true || appendixBuilder == null) {

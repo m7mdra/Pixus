@@ -14,9 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pixus',
 debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primarySwatch: Colors.deepOrange,
-          accentColor: Colors.deepOrangeAccent),
+      theme: ThemeData(),
       home: HomePage(),
     );
   }

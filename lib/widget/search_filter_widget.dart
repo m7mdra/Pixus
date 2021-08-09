@@ -21,11 +21,18 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
   Category? _selectedCategory;
 
   void _filter() {
-    BlocProvider.of<PhotosCubit>(context)
-        .refresh(imageType: _selectedImageType,
+    BlocProvider.of<PhotosCubit>(context).refresh(
+        imageType: _selectedImageType,
         order: _selectedOrder,
         color: _selectedColor,
         category: _selectedCategory);
+  }
+
+  bool get shouldShowClearButton {
+    return _selectedColor != null ||
+        _selectedCategory != null ||
+        _selectedOrder != Order.popular ||
+        _selectedImageType != ImageType.all;
   }
 
   @override
@@ -45,7 +52,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                 },
                 values: Order.values
                     .map((e) =>
-                    PopupMenuItem<Order>(child: Text(e.name), value: e))
+                        PopupMenuItem<Order>(child: Text(e.name), value: e))
                     .toList(),
                 title: 'Order',
                 chipText: _selectedOrder.name),
@@ -56,11 +63,10 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                     this._selectedImageType = type;
                   });
                   _filter();
-
                 },
                 values: ImageType.values
                     .map((e) =>
-                    PopupMenuItem<ImageType>(child: Text(e.name), value: e))
+                        PopupMenuItem<ImageType>(child: Text(e.name), value: e))
                     .toList(),
                 chipText: _selectedImageType.name,
                 title: "Type"),
@@ -71,7 +77,6 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                     this._selectedColor = color;
                   });
                   _filter();
-
                 },
                 values: C.values
                     .map((e) => PopupMenuItem<C>(child: Text(e.name), value: e))
@@ -85,17 +90,36 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                     this._selectedCategory = category;
                   });
                   _filter();
-
                 },
                 values: Category.values
                     .map((e) => PopupMenuItem(child: Text(e.name), value: e))
                     .toList(),
                 chipText: _selectedCategory?.name ?? "No value",
                 title: "Category"),
-
+            if (shouldShowClearButton)
+              TextButton.icon(
+                  onPressed: () {
+                    clearFilters();
+                  },
+                  icon: Icon(
+                    Icons.clear,
+                    color: Colors.white,
+                  ),
+                  label: Text('Clear search',
+                      style: TextStyle(color: Colors.white)))
           ]),
     );
   }
 
   SizedBox _sizedBox() => SizedBox(width: 4);
+
+  void clearFilters() {
+    BlocProvider.of<PhotosCubit>(context).clearFilter();
+    setState(() {
+      _selectedImageType = ImageType.all;
+      _selectedCategory = null;
+      _selectedColor = null;
+      _selectedOrder = Order.popular;
+    });
+  }
 }

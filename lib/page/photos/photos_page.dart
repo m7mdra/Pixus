@@ -32,12 +32,17 @@ class _PhotosPageState extends State<PhotosPage>
     _cubit = PhotosCubit(ServiceLocator.provide());
     _cubit.loadData();
     _pagingController = PagingController<int, Photo>(firstPageKey: 1);
+
     _pagingController.addPageRequestListener((pageKey) {
       _cubit.loadData();
     });
     _cubit.stream.listen((state) {
       if (state is PhotosSuccess) {
         _pagingController.appendPage(state.list, _cubit.page);
+      }
+      if(state is PhotosError){
+        _pagingController.error = "Failed to load data";
+
       }
       if (state is PhotosRefresh) {
         _pagingController.refresh();
@@ -75,12 +80,11 @@ class _PhotosPageState extends State<PhotosPage>
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 sliver: SliverPagingStaggeredGridView(
+
                   pagingController: _pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Photo>(
                       itemBuilder: (context, item, index) {
                     return PhotoWidget(photo: item);
-                  }, noMoreItemsIndicatorBuilder: (context) {
-                    return Text('Finished');
                   }),
                   axisCellCount: calculateColumnRatio(constraints),
                 ),
@@ -114,7 +118,8 @@ class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
           VerticalDivider(),
           SearchFilterWidget(),
           VerticalDivider(),
-          Flexible(child: SearchWidget())
+          Flexible(child: SearchWidget(),flex: 2),
+          Spacer(),
         ],
       ),
     );
