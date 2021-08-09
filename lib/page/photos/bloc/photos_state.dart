@@ -9,6 +9,7 @@ abstract class PhotosState {}
 class PhotosInitial extends PhotosState {}
 class PhotosLoading extends PhotosState {}
 class PhotosEmpty extends PhotosState {}
+class PhotosRefresh extends PhotosState{}
 class PhotosSuccess extends PhotosState {
   final List<Photo> list;
 

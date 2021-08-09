@@ -23,7 +23,7 @@ class SearchWidget extends StatelessWidget {
                 border: InputBorder.none,
                 contentPadding:
                 const EdgeInsets.symmetric(horizontal: 8))),
-        width: MediaQuery.of(context).size.width / 3,
+
       ),
     );
   }

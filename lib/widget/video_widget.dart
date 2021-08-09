@@ -15,57 +15,35 @@ class VideoWidget extends StatefulWidget {
 }
 
 class _VideoWidgetState extends State<VideoWidget> {
-  bool play = false;
-  late VideoPlayerController _videoPlayerController;
 
   @override
   void initState() {
     super.initState();
-    var urls = widget.video.urls;
-    var url = "";
-    if (urls!.tiny != null) {
-      url = urls.tiny!.url;
-    } else if (urls.small != null) {
-      url = urls.small!.url;
-    } else {
-      url = urls.medium!.url;
-    }
-    _videoPlayerController = VideoPlayerController.network(url)
-      ..initialize().then((value) {
-        setState(() {});
-      });
+
   }
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    return MouseRegion(
-      onEnter: (event) {
-        setState(() {
-          play = !play;
-        });
-      },
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-               OctoImage(
-                  width: width,
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                      "https://i.vimeocdn.com/video/${widget.video.pictureId}_640.jpg"),
-                  placeholderBuilder: (context) {
-                    return CachedNetworkImage(
-                        imageUrl:
-                            "https://i.vimeocdn.com/video/${widget.video.pictureId}_150.jpg",
-                        fit: BoxFit.cover,
-                        width: width);
-                  },
-                ),
-          if (play)
-            Icon(FontAwesomeIcons.solidPlayCircle,
-                size: 50, color: Colors.white)
-        ],
-      ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+             OctoImage(
+                width: width,
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                    "https://i.vimeocdn.com/video/${widget.video.pictureId}_640.jpg"),
+                placeholderBuilder: (context) {
+                  return CachedNetworkImage(
+                      imageUrl:
+                          "https://i.vimeocdn.com/video/${widget.video.pictureId}_150.jpg",
+                      fit: BoxFit.cover,
+                      width: width);
+                },
+              ),
+          Icon(FontAwesomeIcons.solidPlayCircle,
+              size: 50, color: Colors.white)
+      ],
     );
   }
 }

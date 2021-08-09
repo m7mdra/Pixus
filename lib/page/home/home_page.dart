@@ -18,7 +18,6 @@ class _HomePageState extends State<HomePage> {
   var _pages = [
     const PhotosPage(),
     const VideosPage(),
-    Container(color: Colors.blueGrey),
     Container(color: Colors.blue)
   ];
 

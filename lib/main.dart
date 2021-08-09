@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pixus',
-
+debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.deepOrange,
           accentColor: Colors.deepOrangeAccent),

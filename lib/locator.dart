@@ -17,7 +17,7 @@ class ServiceLocator {
       request: true,
       requestBody: false,
       requestHeader: false,
-      responseBody: true,
+      responseBody: false,
       responseHeader: false,
     ));
     var pixusClient = PixusClient(client: httpClient);

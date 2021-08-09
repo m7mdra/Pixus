@@ -4,9 +4,9 @@ extension OrderExtension on Order {
   String get name {
     switch (this) {
       case Order.popular:
-        return "popular";
+        return "Popular";
       case Order.latest:
-        return "latest";
+        return "Latest";
     }
   }
 }

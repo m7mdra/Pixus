@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pix/breakpoints.dart';
 import 'package:pix/data/model/photo_response.dart';
@@ -6,6 +8,7 @@ import 'package:pix/locator.dart';
 import 'package:pix/page/photos/bloc/photos_cubit.dart';
 import 'package:pix/page/photos/bloc/photos_state.dart';
 import 'package:pix/widget/photo_widget.dart';
+import 'package:pix/widget/search_filter_widget.dart';
 import 'package:pix/widget/search_widget.dart';
 import 'package:pix/widget/sliver_paged_staggered_grid_view.dart';
 
@@ -22,21 +25,22 @@ class _PhotosPageState extends State<PhotosPage>
     with AutomaticKeepAliveClientMixin {
   late PagingController<int, Photo> _pagingController;
   late PhotosCubit _cubit;
-  int _page = 1;
 
   @override
   void initState() {
     super.initState();
     _cubit = PhotosCubit(ServiceLocator.provide());
-    _cubit.loadData(_page);
+    _cubit.loadData();
     _pagingController = PagingController<int, Photo>(firstPageKey: 1);
     _pagingController.addPageRequestListener((pageKey) {
-      _cubit.loadData(pageKey);
+      _cubit.loadData();
     });
     _cubit.stream.listen((state) {
       if (state is PhotosSuccess) {
-        _page += 1;
-        _pagingController.appendPage(state.list, _page);
+        _pagingController.appendPage(state.list, _cubit.page);
+      }
+      if (state is PhotosRefresh) {
+        _pagingController.refresh();
       }
       if (state is PhotosEmpty) {
         _pagingController.appendLastPage([]);
@@ -60,16 +64,26 @@ class _PhotosPageState extends State<PhotosPage>
         } else {
           return CustomScrollView(
             slivers: [
-              SliverToBoxAdapter(),
-              SliverPagingStaggeredGridView(
-                pagingController: _pagingController,
-                builderDelegate: PagedChildBuilderDelegate<Photo>(
-                    itemBuilder: (context, item, index) {
-                  return PhotoWidget(photo: item);
-                }, noMoreItemsIndicatorBuilder: (context) {
-                  return Text('Finished');
-                }),
-                axisCellCount: calculateColumnRatio(constraints),
+              BlocProvider.value(
+                  value: _cubit,
+                  child: SliverPersistentHeader(
+                    delegate: SearchFilterHeaderDelegate(),
+                    pinned: false,
+                    floating: true,
+                  )),
+
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                sliver: SliverPagingStaggeredGridView(
+                  pagingController: _pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<Photo>(
+                      itemBuilder: (context, item, index) {
+                    return PhotoWidget(photo: item);
+                  }, noMoreItemsIndicatorBuilder: (context) {
+                    return Text('Finished');
+                  }),
+                  axisCellCount: calculateColumnRatio(constraints),
+                ),
               ),
             ],
           );
@@ -87,14 +101,27 @@ class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          boxShadow: [BoxShadow(color: Colors.black12, offset: Offset(0, 2))]),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
-        children: [Flexible(child: Container()), SearchWidget()],
+        children: [
+          Text(
+            'Pixus',
+            style: GoogleFonts.lobster(color: Colors.white, fontSize: 50),
+          ),
+          VerticalDivider(),
+          SearchFilterWidget(),
+          VerticalDivider(),
+          Flexible(child: SearchWidget())
+        ],
       ),
     );
   }
 
   @override
-  double get maxExtent => 80;
+  double get maxExtent => 75;
 
   @override
   double get minExtent => 70;
@@ -104,3 +131,4 @@ class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
     return true;
   }
 }
+

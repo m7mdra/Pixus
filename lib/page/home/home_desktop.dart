@@ -31,8 +31,6 @@ class HomeDesktop extends StatelessWidget {
             NavigationRailDestination(
                 icon: Icon(FontAwesomeIcons.video), label: Text('Videos')),
             NavigationRailDestination(
-                icon: Icon(FontAwesomeIcons.th), label: Text('Categories')),
-            NavigationRailDestination(
                 icon: Icon(FontAwesomeIcons.cog), label: Text('Settings')),
           ],
           labelType: NavigationRailLabelType.all,

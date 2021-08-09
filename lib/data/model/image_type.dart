@@ -4,14 +4,14 @@ extension ImageTypeExtension on ImageType {
   String get name {
     switch (this) {
       case ImageType.all:
-        return "all";
+        return "All";
       case ImageType.illustration:
-        return "illustration";
+        return "Illustration";
       case ImageType.photo:
-        return "photo";
+        return "Photo";
 
       case ImageType.vector:
-        return "vector";
+        return "Vector";
     }
   }
 }

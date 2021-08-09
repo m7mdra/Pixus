@@ -36,8 +36,7 @@ class HomeMobile extends StatelessWidget {
                 icon: Icon(FontAwesomeIcons.solidImages), label: 'Images'),
             BottomNavigationBarItem(
                 icon: Icon(FontAwesomeIcons.video), label: 'Videos'),
-            BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.th), label: 'Categories'),
+
             BottomNavigationBarItem(
                 icon: Icon(FontAwesomeIcons.cog), label: 'Settings'),
           ],
