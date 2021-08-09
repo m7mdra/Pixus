@@ -25,6 +25,7 @@ class HomeDesktop extends StatelessWidget {
           minWidth: 80,
           onDestinationSelected: onNavigationChanged,
           selectedIndex: pageIndex,
+          elevation: 2,
           destinations: [
             NavigationRailDestination(
                 icon: Icon(FontAwesomeIcons.solidImage), label: Text('Images')),

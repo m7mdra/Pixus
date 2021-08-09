@@ -16,12 +16,16 @@ class PhotoWidget extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     return Container(
       child: OctoImage(
+        fadeInCurve: Curves.linear,
+        fadeOutCurve: Curves.linear,
+        fadeInDuration: Duration(milliseconds: 1),
+        fadeOutDuration: Duration(milliseconds: 1),
         width: width,
-        fit: BoxFit.cover,
+        fit: BoxFit.fitHeight,
         image: CachedNetworkImageProvider(photo.webformatURL),
         placeholderBuilder: (context) {
           return CachedNetworkImage(
-              imageUrl: photo.previewURL, fit: BoxFit.cover, width: width);
+              imageUrl: photo.previewURL, fit: BoxFit.fitHeight, width: width);
         },
       ),
     );

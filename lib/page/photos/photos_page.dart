@@ -78,15 +78,15 @@ class _PhotosPageState extends State<PhotosPage>
                   )),
 
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                sliver: SliverPagingStaggeredGridView(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                sliver: PagedSliverGrid(
 
                   pagingController: _pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Photo>(
                       itemBuilder: (context, item, index) {
                     return PhotoWidget(photo: item);
-                  }),
-                  axisCellCount: calculateColumnRatio(constraints),
+                  }), gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 300,crossAxisSpacing: 8,mainAxisSpacing: 8),
+
                 ),
               ),
             ],
