@@ -25,6 +25,7 @@ class PixusClient {
       Orientation orientation = Orientation.all,
       Category category = Category.all}) async {
     try {
+      print("Page: $page");
       var queryParameters = <String, dynamic>{};
       if (query.isNotEmpty) {
         queryParameters['q'] = query;

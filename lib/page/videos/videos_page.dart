@@ -25,7 +25,6 @@ class _VideosPageState extends State<VideosPage>
   void initState() {
     super.initState();
     _cubit = VideosCubit(ServiceLocator.provide());
-    _cubit.loadData();
     _pagingController = PagingController<int, Video>(firstPageKey: 1);
     _pagingController.addPageRequestListener((pageKey) {
       _cubit.loadData();

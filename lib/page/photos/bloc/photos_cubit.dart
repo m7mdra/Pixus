@@ -34,12 +34,9 @@ class PhotosCubit extends Cubit<PhotosState> {
           imageType: imageType,
           order: order,
           orientation: orientation);
-      if (response.list.isNotEmpty) {
-        _page += 1;
-        emit(PhotosSuccess(response.list));
-      } else {
-        emit(PhotosEmpty());
-      }
+
+      emit(PhotosSuccess(response.list));
+      _page += 1;
     } catch (error) {
       emit(PhotosError());
     }

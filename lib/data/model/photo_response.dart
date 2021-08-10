@@ -30,9 +30,9 @@ class Photo {
   late String webformatURL;
   late int webformatWidth;
   late int webformatHeight;
-  String? largeImageURL;
-  int? imageWidth;
-  int? imageHeight;
+  late String largeImageURL;
+  late int imageWidth;
+  late int imageHeight;
   int? imageSize;
   int? views;
   int? downloads;
@@ -40,8 +40,8 @@ class Photo {
   int? likes;
   int? comments;
   int? userId;
-  String? user;
-  String? userImageURL;
+  late String user;
+  late String userImageURL;
 
 
 
