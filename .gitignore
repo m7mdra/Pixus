@@ -28,8 +28,12 @@
 .flutter-plugins-dependencies
 .packages
 .pub-cache/
-.pub/
-/build/
+/build/4f2a58af27abc49ecf55570043bbf938.cache.dill.track.dill
+/build/macos
+/build/ios
+/build/flutter_assets
+/build/last_build_run.json
+
 
 # Web related
 lib/generated_plugin_registrant.dart
