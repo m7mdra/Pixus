@@ -24,44 +24,46 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, dimens) {
-          if (dimens.maxWidth <= kMobileBreakpoint) {
-            return HomeMobile(
-              pageController: _pageController,
-              pageIndex: _selectedItemIndex,
-              onNavigationChanged: (page) {
-                setState(() {
-                  _pageController.jumpToPage(page);
-                  _selectedItemIndex = page;
-                });
-              },
-              pages: _pages,
-              onPageChanged: (page) {
-                setState(() {
-                  this._selectedItemIndex = page;
-                });
-              },
-            );
-          } else {
-            return HomeDesktop(
-              pageController: _pageController,
-              pageIndex: _selectedItemIndex,
-              onNavigationChanged: (page) {
-                setState(() {
-                  _pageController.jumpToPage(page);
-                  _selectedItemIndex = page;
-                });
-              },
-              pages: _pages,
-              onPageChanged: (page) {
-                setState(() {
-                  this._selectedItemIndex = page;
-                });
-              },
-            );
-          }
-        },
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, dimens) {
+            if (dimens.maxWidth <= kMobileBreakpoint) {
+              return HomeMobile(
+                pageController: _pageController,
+                pageIndex: _selectedItemIndex,
+                onNavigationChanged: (page) {
+                  setState(() {
+                    _pageController.jumpToPage(page);
+                    _selectedItemIndex = page;
+                  });
+                },
+                pages: _pages,
+                onPageChanged: (page) {
+                  setState(() {
+                    this._selectedItemIndex = page;
+                  });
+                },
+              );
+            } else {
+              return HomeDesktop(
+                pageController: _pageController,
+                pageIndex: _selectedItemIndex,
+                onNavigationChanged: (page) {
+                  setState(() {
+                    _pageController.jumpToPage(page);
+                    _selectedItemIndex = page;
+                  });
+                },
+                pages: _pages,
+                onPageChanged: (page) {
+                  setState(() {
+                    this._selectedItemIndex = page;
+                  });
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }

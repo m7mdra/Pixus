@@ -20,12 +20,12 @@ class PhotoWidget extends StatelessWidget {
         fadeOutCurve: Curves.linear,
         fadeInDuration: Duration(milliseconds: 1),
         fadeOutDuration: Duration(milliseconds: 1),
+        fit: BoxFit.cover,
         width: width,
-        fit: BoxFit.fitHeight,
         image: CachedNetworkImageProvider(photo.webformatURL),
         placeholderBuilder: (context) {
           return CachedNetworkImage(
-              imageUrl: photo.previewURL, fit: BoxFit.fitHeight, width: width);
+              imageUrl: photo.previewURL, fit: BoxFit.cover, width: width);
         },
       ),
     );

@@ -1,9 +1,9 @@
-class VideoResponse {
+class VideosResponse {
   int? total;
   int? totalHits;
   List<Video> list = [];
 
-  VideoResponse.fromJson(dynamic json) {
+  VideosResponse.fromJson(dynamic json) {
     total = json["total"];
     totalHits = json["totalHits"];
     if (json["hits"] != null) {

@@ -1,4 +1,5 @@
 enum C {
+  all,
   grayscale,
   transparent,
   red,
@@ -18,7 +19,8 @@ enum C {
 extension ColorExtensions on C {
   String get name{
     switch(this){
-
+      case C.all:
+        return "All";
       case C.grayscale:
         return "Grayscale";
       case C.transparent:

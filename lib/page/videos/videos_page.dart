@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:pix/breakpoints.dart';
 import 'package:pix/data/model/video_response.dart';
 import 'package:pix/locator.dart';
-import 'package:pix/widget/sliver_paged_staggered_grid_view.dart';
+import 'package:pix/widget/pixus_sliver_app_bar.dart';
 import 'package:pix/widget/video_widget.dart';
+import 'package:pix/widget/videos_search_filter_widget.dart';
 
 import 'bloc/videos_cubit.dart';
 
@@ -15,23 +16,26 @@ class VideosPage extends StatefulWidget {
   _VideosPageState createState() => _VideosPageState();
 }
 
-class _VideosPageState extends State<VideosPage>  with AutomaticKeepAliveClientMixin {
+class _VideosPageState extends State<VideosPage>
+    with AutomaticKeepAliveClientMixin {
   late PagingController<int, Video> _pagingController;
   late VideosCubit _cubit;
-  int _page = 1;
+
   @override
   void initState() {
     super.initState();
     _cubit = VideosCubit(ServiceLocator.provide());
-    _cubit.loadData(_page);
+    _cubit.loadData();
     _pagingController = PagingController<int, Video>(firstPageKey: 1);
     _pagingController.addPageRequestListener((pageKey) {
-      _cubit.loadData(pageKey);
+      _cubit.loadData();
     });
     _cubit.stream.listen((state) {
       if (state is VideosSuccess) {
-        _page += 1;
-        _pagingController.appendPage(state.list, _page);
+        _pagingController.appendPage(state.list, _cubit.page);
+      }
+      if (state is VideosRefresh) {
+        _pagingController.refresh();
       }
       if (state is VideosEmpty) {
         _pagingController.appendLastPage([]);
@@ -48,31 +52,58 @@ class _VideosPageState extends State<VideosPage>  with AutomaticKeepAliveClientM
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return  LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        if (constraints.maxWidth <= kMobileBreakpoint) {
-          return Text('mega');
-        } else {
-          return CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(),
-              SliverPagingStaggeredGridView(
-                pagingController: _pagingController,
-                builderDelegate: PagedChildBuilderDelegate<Video>(
-                    itemBuilder: (context, item, index) {
-                      return VideoWidget(video: item);
-                    }, noMoreItemsIndicatorBuilder: (context) {
-                  return Text('Finished');
-                }),
-                axisCellCount: calculateColumnRatio(constraints),
-              ),
-            ],
-          );
-        }
-      },
+    return CustomScrollView(
+      slivers: [
+        PixusSliverAppBar(),
+        BlocProvider.value(
+          value: _cubit,
+          child: SliverPersistentHeader(
+              delegate: SearchFilterHeaderDelegate(), floating: true),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          sliver: PagedSliverGrid(
+            pagingController: _pagingController,
+            builderDelegate: PagedChildBuilderDelegate<Video>(
+                itemBuilder: (context, item, index) {
+              return VideoWidget(video: item);
+            }),
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 300,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8),
+          ),
+        ),
+      ],
     );
   }
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          boxShadow: [BoxShadow(color: Colors.black12, offset: Offset(0, 2))]),
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        VideoSearchFilter(),
+      ]),
+    );
+  }
+
+  @override
+  double get maxExtent => 75;
+
+  @override
+  double get minExtent => 70;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return true;
+  }
 }

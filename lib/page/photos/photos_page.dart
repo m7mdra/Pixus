@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:pix/breakpoints.dart';
 import 'package:pix/data/model/photo_response.dart';
 import 'package:pix/locator.dart';
 import 'package:pix/page/photos/bloc/photos_cubit.dart';
 import 'package:pix/page/photos/bloc/photos_state.dart';
 import 'package:pix/widget/photo_widget.dart';
-import 'package:pix/widget/search_filter_widget.dart';
-import 'package:pix/widget/search_widget.dart';
-import 'package:pix/widget/sliver_paged_staggered_grid_view.dart';
+import 'package:pix/widget/photos_search_filter_widget.dart';
+import 'package:pix/widget/pixus_sliver_app_bar.dart';
 
 import 'bloc/photos_cubit.dart';
 
@@ -40,9 +37,8 @@ class _PhotosPageState extends State<PhotosPage>
       if (state is PhotosSuccess) {
         _pagingController.appendPage(state.list, _cubit.page);
       }
-      if(state is PhotosError){
+      if (state is PhotosError) {
         _pagingController.error = "Failed to load data";
-
       }
       if (state is PhotosRefresh) {
         _pagingController.refresh();
@@ -62,43 +58,39 @@ class _PhotosPageState extends State<PhotosPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        if (constraints.maxWidth <= kMobileBreakpoint) {
-          return Text('mega');
-        } else {
-          return CustomScrollView(
-            slivers: [
-              BlocProvider.value(
-                  value: _cubit,
-                  child: SliverPersistentHeader(
-                    delegate: SearchFilterHeaderDelegate(),
-                    pinned: false,
-                    floating: true,
-                  )),
-
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                sliver: PagedSliverGrid(
-
-                  pagingController: _pagingController,
-                  builderDelegate: PagedChildBuilderDelegate<Photo>(
-                      itemBuilder: (context, item, index) {
-                    return PhotoWidget(photo: item);
-                  }), gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 300,crossAxisSpacing: 8,mainAxisSpacing: 8),
-
-                ),
-              ),
-            ],
-          );
-        }
-      },
+    return CustomScrollView(
+      slivers: [
+        PixusSliverAppBar(),
+        BlocProvider.value(
+            value: _cubit,
+            child: SliverPersistentHeader(
+              delegate: SearchFilterHeaderDelegate(),
+              pinned: false,
+              floating: true,
+            )),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          sliver: PagedSliverGrid(
+            pagingController: _pagingController,
+            builderDelegate: PagedChildBuilderDelegate<Photo>(
+                itemBuilder: (context, item, index) {
+              return PhotoWidget(photo: item);
+            }),
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 300,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8),
+          ),
+        ),
+      ],
     );
   }
 
   @override
   bool get wantKeepAlive => true;
 }
+
+
 
 class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
@@ -108,20 +100,9 @@ class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
       decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
           boxShadow: [BoxShadow(color: Colors.black12, offset: Offset(0, 2))]),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Row(
-        children: [
-          Text(
-            'Pixus',
-            style: GoogleFonts.lobster(color: Colors.white, fontSize: 50),
-          ),
-          VerticalDivider(),
-          SearchFilterWidget(),
-          VerticalDivider(),
-          Flexible(child: SearchWidget(),flex: 2),
-          Spacer(),
-        ],
-      ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        PhotosSearchFilter(),
+      ]),
     );
   }
 
@@ -136,4 +117,3 @@ class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
     return true;
   }
 }
-

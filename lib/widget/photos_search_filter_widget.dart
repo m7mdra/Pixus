@@ -7,18 +7,18 @@ import 'package:pix/data/model/order.dart';
 import 'package:pix/page/photos/bloc/photos_cubit.dart';
 import 'package:pix/widget/chip_drop_down.dart';
 
-class SearchFilterWidget extends StatefulWidget {
-  const SearchFilterWidget({Key? key}) : super(key: key);
+class PhotosSearchFilter extends StatefulWidget {
+  const PhotosSearchFilter({Key? key}) : super(key: key);
 
   @override
-  _SearchFilterWidgetState createState() => _SearchFilterWidgetState();
+  _PhotosSearchFilterState createState() => _PhotosSearchFilterState();
 }
 
-class _SearchFilterWidgetState extends State<SearchFilterWidget> {
+class _PhotosSearchFilterState extends State<PhotosSearchFilter> {
   var _selectedOrder = Order.popular;
   var _selectedImageType = ImageType.all;
-  C? _selectedColor;
-  Category? _selectedCategory;
+  C _selectedColor = C.all;
+  Category _selectedCategory = Category.all;
 
   void _filter() {
     BlocProvider.of<PhotosCubit>(context).refresh(
@@ -28,12 +28,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
         category: _selectedCategory);
   }
 
-  bool get shouldShowClearButton {
-    return _selectedColor != null ||
-        _selectedCategory != null ||
-        _selectedOrder != Order.popular ||
-        _selectedImageType != ImageType.all;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +76,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                 values: C.values
                     .map((e) => PopupMenuItem<C>(child: Text(e.name), value: e))
                     .toList(),
-                chipText: _selectedColor?.name ?? "No value",
+                chipText: _selectedColor.name,
                 title: "Color"),
             _sizedBox(),
             ChipDropDown<Category>(
@@ -94,19 +89,9 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                 values: Category.values
                     .map((e) => PopupMenuItem(child: Text(e.name), value: e))
                     .toList(),
-                chipText: _selectedCategory?.name ?? "No value",
+                chipText: _selectedCategory.name,
                 title: "Category"),
-            if (shouldShowClearButton)
-              TextButton.icon(
-                  onPressed: () {
-                    clearFilters();
-                  },
-                  icon: Icon(
-                    Icons.clear,
-                    color: Colors.white,
-                  ),
-                  label: Text('Clear search',
-                      style: TextStyle(color: Colors.white)))
+
           ]),
     );
   }
@@ -117,8 +102,8 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
     BlocProvider.of<PhotosCubit>(context).clearFilter();
     setState(() {
       _selectedImageType = ImageType.all;
-      _selectedCategory = null;
-      _selectedColor = null;
+      _selectedCategory = Category.all;
+      _selectedColor = C.all;
       _selectedOrder = Order.popular;
     });
   }

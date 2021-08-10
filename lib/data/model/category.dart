@@ -1,9 +1,11 @@
 enum Category{
-  backgrounds, fashion, nature, science, education, feelings, health, people, religion, places, animals, industry, computer, food, sports, transportation, travel, buildings, business, music
+  all,backgrounds, fashion, nature, science, education, feelings, health, people, religion, places, animals, industry, computer, food, sports, transportation, travel, buildings, business, music
 }
 extension CategoryExtensions on Category{
   String get name{
     switch(this){
+      case Category.all:
+        return "All";
       case Category.backgrounds:
         return "Backgrounds";
       case Category.fashion:

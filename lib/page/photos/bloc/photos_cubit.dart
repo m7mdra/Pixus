@@ -9,12 +9,12 @@ import 'package:pix/page/photos/bloc/photos_state.dart';
 
 class PhotosCubit extends Cubit<PhotosState> {
   final PixusClient _client;
-  int _page = 1;
   ImageType imageType = ImageType.all;
+  int _page = 1;
   Order order = Order.popular;
-  C? color;
+  C color = C.all;
   Orientation orientation = Orientation.all;
-  Category? category;
+  Category category = Category.all;
   String query = "";
 
   int get page {
@@ -50,10 +50,10 @@ class PhotosCubit extends Cubit<PhotosState> {
     emit(PhotosRefresh());
 
     this.imageType = ImageType.all;
-    this.color = null;
+    this.color = C.all;
     this.query = "";
     this.orientation = Orientation.all;
-    this.category = null;
+    this.category = Category.all;
     this.order = Order.popular;
     loadData();
   }
@@ -62,9 +62,9 @@ class PhotosCubit extends Cubit<PhotosState> {
       {String query = "",
       ImageType imageType = ImageType.all,
       Order order = Order.popular,
-      C? color,
+      C color = C.all,
       Orientation orientation = Orientation.all,
-      Category? category}) {
+      Category category = Category.all}) {
     emit(PhotosRefresh());
     _page = 1;
     this.imageType = imageType;

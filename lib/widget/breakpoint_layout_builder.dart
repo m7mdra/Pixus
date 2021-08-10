@@ -14,6 +14,7 @@ class BreakpointLayoutBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
+    print("${mobileWidget.runtimeType} : ${largeWidget.runtimeType} : ${constraints.maxWidth}");
         if (constraints.maxWidth <= kMobileBreakpoint) {
           return mobileWidget;
         } else {

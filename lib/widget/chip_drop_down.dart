@@ -34,7 +34,7 @@ class ChipDropDown<Value> extends StatelessWidget {
                 Icon(Icons.keyboard_arrow_down)
               ],
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 4),
             decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(16)),
           ),
           itemBuilder: (context) {
