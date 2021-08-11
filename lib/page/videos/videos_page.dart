@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pix/data/model/video_response.dart';
 import 'package:pix/locator.dart';
+import 'package:pix/page/video_details/video_details_page.dart';
 import 'package:pix/widget/pixus_sliver_app_bar.dart';
 import 'package:pix/widget/video_widget.dart';
 import 'package:pix/widget/videos_search_filter_widget.dart';
@@ -65,7 +66,15 @@ class _VideosPageState extends State<VideosPage>
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<Video>(
                 itemBuilder: (context, item, index) {
-              return VideoWidget(video: item);
+              return VideoWidget(
+                video: item,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => VideoDetailsPage(video: item)));
+                },
+              );
             }),
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 300,

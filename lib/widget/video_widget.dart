@@ -6,8 +6,10 @@ import 'package:pix/data/model/video_response.dart';
 
 class VideoWidget extends StatefulWidget {
   final Video video;
+  final VoidCallback? onTap;
 
-  const VideoWidget({Key? key, required this.video}) : super(key: key);
+  const VideoWidget({Key? key, required this.video, this.onTap})
+      : super(key: key);
 
   @override
   _VideoWidgetState createState() => _VideoWidgetState();
@@ -22,32 +24,35 @@ class _VideoWidgetState extends State<VideoWidget> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    return OctoImage(
-      fadeInCurve: Curves.linear,
-      fadeOutCurve: Curves.linear,
-      fadeInDuration: Duration(milliseconds: 1),
-      fadeOutDuration: Duration(milliseconds: 1),
-      width: width,
-      imageBuilder: (BuildContext context, Widget child) {
-        return Stack(
-          fit: StackFit.passthrough,
-          children: [
-            child,
-            Icon(FontAwesomeIcons.solidPlayCircle,
-                size: 50, color: Colors.white)
-          ],
-        );
-      },
-      fit: BoxFit.cover,
-      image: CachedNetworkImageProvider(
-          "https://i.vimeocdn.com/video/${widget.video.pictureId}_640.jpg"),
-      placeholderBuilder: (context) {
-        return CachedNetworkImage(
-            imageUrl:
-                "https://i.vimeocdn.com/video/${widget.video.pictureId}_150.jpg",
-            fit: BoxFit.cover,
-            width: width);
-      },
+    return InkWell(
+      onTap: widget.onTap,
+      child: OctoImage(
+        fadeInCurve: Curves.linear,
+        fadeOutCurve: Curves.linear,
+        fadeInDuration: Duration(milliseconds: 1),
+        fadeOutDuration: Duration(milliseconds: 1),
+        width: width,
+        imageBuilder: (BuildContext context, Widget child) {
+          return Stack(
+            fit: StackFit.passthrough,
+            children: [
+              child,
+              Icon(FontAwesomeIcons.solidPlayCircle,
+                  size: 50, color: Colors.white)
+            ],
+          );
+        },
+        fit: BoxFit.cover,
+        image: CachedNetworkImageProvider(
+            "https://i.vimeocdn.com/video/${widget.video.pictureId}_640.jpg"),
+        placeholderBuilder: (context) {
+          return CachedNetworkImage(
+              imageUrl:
+                  "https://i.vimeocdn.com/video/${widget.video.pictureId}_150.jpg",
+              fit: BoxFit.cover,
+              width: width);
+        },
+      ),
     );
   }
 }

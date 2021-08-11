@@ -64,9 +64,7 @@ class Video {
     map["tags"] = tags;
     map["duration"] = duration;
     map["picture_id"] = pictureId;
-    if (urls != null) {
-      map["videos"] = urls?.toJson();
-    }
+
     map["views"] = views;
     map["downloads"] = downloads;
     map["likes"] = likes;
@@ -91,22 +89,7 @@ class Urls {
     tiny = json["tiny"] != null ? Tiny.fromJson(json["tiny"]) : null;
   }
 
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    if (large != null) {
-      map["large"] = large?.toJson();
-    }
-    if (medium != null) {
-      map["medium"] = medium?.toJson();
-    }
-    if (small != null) {
-      map["small"] = small?.toJson();
-    }
-    if (tiny != null) {
-      map["tiny"] = tiny?.toJson();
-    }
-    return map;
-  }
+
 }
 
 class Tiny {
