@@ -102,27 +102,31 @@ class VideoPlaceHolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OctoImage(
-      fadeInCurve: Curves.linear,
-      fadeOutCurve: Curves.linear,
-      fadeInDuration: Duration(milliseconds: 1),
-      fadeOutDuration: Duration(milliseconds: 1),
-      imageBuilder: (BuildContext context, Widget child) {
-        return Stack(
-          alignment: AlignmentDirectional.center,
-          fit: StackFit.passthrough,
-          children: [child, CircularProgressIndicator()],
-        );
-      },
-      fit: BoxFit.cover,
-      image: CachedNetworkImageProvider(
-          "https://i.vimeocdn.com/video/${video.pictureId}_640.jpg"),
-      placeholderBuilder: (context) {
-        return CachedNetworkImage(
-            imageUrl: "https://i.vimeocdn.com/video/${video.pictureId}_150.jpg",
-            fit: BoxFit.cover,
-            width: MediaQuery.of(context).size.width);
-      },
+    return Hero(
+      transitionOnUserGestures: true,
+      tag: 'video:#${video.id}',
+      child: OctoImage(
+        fadeInCurve: Curves.linear,
+        fadeOutCurve: Curves.linear,
+        fadeInDuration: Duration(milliseconds: 1),
+        fadeOutDuration: Duration(milliseconds: 1),
+        imageBuilder: (BuildContext context, Widget child) {
+          return Stack(
+            alignment: AlignmentDirectional.center,
+            fit: StackFit.passthrough,
+            children: [child, CircularProgressIndicator()],
+          );
+        },
+        fit: BoxFit.cover,
+        image: CachedNetworkImageProvider(
+            "https://i.vimeocdn.com/video/${video.pictureId}_640.jpg"),
+        placeholderBuilder: (context) {
+          return CachedNetworkImage(
+              imageUrl: "https://i.vimeocdn.com/video/${video.pictureId}_150.jpg",
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width);
+        },
+      ),
     );
   }
 }

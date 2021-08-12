@@ -68,7 +68,7 @@ class _ImageDetailsPageState extends State<ImageDetailsPage> {
                       _loadHd ? photo.largeImageURL : photo.webformatURL),
                 ),
               ),
-              AnimatedOpacity(
+              /*AnimatedOpacity(
                 duration: Duration(milliseconds: 200),
                 opacity: _hideAll ? 0.0 : 1.0,
                 child: Align(
@@ -108,7 +108,7 @@ class _ImageDetailsPageState extends State<ImageDetailsPage> {
                     ),
                   ),
                 ),
-              )
+              )*/
             ],
           ),
         ),

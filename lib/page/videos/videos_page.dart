@@ -98,9 +98,7 @@ class SearchFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
       decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
           boxShadow: [BoxShadow(color: Colors.black12, offset: Offset(0, 2))]),
-      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        VideoSearchFilter(),
-      ]),
+      child: Center(child: VideoSearchFilter()),
     );
   }
 

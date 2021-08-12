@@ -53,12 +53,12 @@ class VideosCubit extends Cubit<VideosState> {
   void refresh(
       {Order order = Order.popular,
       VideoType videoType = VideoType.all,
-      Category? category}) {
+      Category category = Category.all}) {
     emit(VideosRefresh());
     _page = 1;
 
     this._videoType = videoType;
-    this._category = Category.all;
+    this._category = category;
     this._order = order;
     loadData();
   }
