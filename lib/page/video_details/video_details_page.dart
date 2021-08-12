@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:pix/data/model/video_response.dart';
 import 'package:pix/page/image_details/image_details_page.dart';
-import 'package:video_player/video_player.dart';
+import 'package:pix/widget/media_controls.dart';
+import 'package:pix/widget/video_player.dart';
 
 class VideoDetailsPage extends StatefulWidget {
   final Video video;
@@ -16,15 +16,16 @@ class VideoDetailsPage extends StatefulWidget {
 }
 
 class _VideoDetailsPageState extends State<VideoDetailsPage> {
-  late VideoPlayerController _videoPlayerController;
+  late VideoController _videoPlayerController;
 
   @override
   void initState() {
     super.initState();
     _videoPlayerController =
-        VideoPlayerController.network(widget.video.urls?.medium?.url ?? "");
+        VideoController.network(widget.video.urls?.small?.url ?? "");
 
     _videoPlayerController.addListener(() {});
+
     _videoPlayerController.initialize().then((value) {
       setState(() {});
     });
@@ -51,24 +52,40 @@ class _VideoDetailsPageState extends State<VideoDetailsPage> {
                 child: Stack(
                   alignment: AlignmentDirectional.center,
                   children: [
-                    VideoPlayer(_videoPlayerController),
-                    IconButton(
-                      icon: Icon(
-                        value.isPlaying
-                            ? FontAwesomeIcons.solidPauseCircle
-                            : FontAwesomeIcons.solidPlayCircle,
-                        size: 40,
-                      ),
-                      color: Colors.white,
-                      onPressed: () {
-                        setState(() {});
-                        if (value.isPlaying) {
-                          _videoPlayerController.pause();
-                        } else {
-                          _videoPlayerController.play();
-                        }
-                      },
-                    )
+                    VideoPlayer(_videoPlayerController, (context) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: PopupMenuButton<Media>(
+                          onSelected: (item) {
+                            _videoPlayerController.pause();
+                            _videoPlayerController =
+                                VideoController.network(item.url);
+                            _videoPlayerController.initialize()
+                              ..then((value) {
+                                _videoPlayerController.play();
+                                setState(() {});
+                              });
+                          },
+                          itemBuilder: (BuildContext context) {
+                            var video = widget.video;
+                            return [
+                              if (video.urls?.tiny != null) video.urls?.tiny,
+                              video.urls?.small,
+                              video.urls?.medium,
+                              video.urls?.large,
+                            ]
+                                .where((element) => element != null)
+                                .map((e) => e!)
+                                .map((e) => PopupMenuItem(
+                                      child: Text("${e.width}x${e.height}"),
+                                      value: e,
+                                    ))
+                                .toList();
+                          },
+                          child: Icon(Icons.hd, size: 25),
+                        ),
+                      );
+                    }),
                   ],
                 ),
                 aspectRatio: value.aspectRatio)

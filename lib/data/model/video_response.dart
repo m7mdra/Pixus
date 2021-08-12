@@ -77,113 +77,34 @@ class Video {
 }
 
 class Urls {
-  late Large? large;
-  late Medium? medium;
-  late Small? small;
-  late Tiny? tiny;
+  late Media? large;
+  late Media? medium;
+  late Media? small;
+  late Media? tiny;
 
   Urls.fromJson(dynamic json) {
-    large = json["large"] != null ? Large.fromJson(json["large"]) : null;
-    medium = json["medium"] != null ? Medium.fromJson(json["medium"]) : null;
-    small = json["small"] != null ? Small.fromJson(json["small"]) : null;
-    tiny = json["tiny"] != null ? Tiny.fromJson(json["tiny"]) : null;
+    large = json["large"] != null ? Media.fromJson(json["large"]) : null;
+    medium = json["medium"] != null ? Media.fromJson(json["medium"]) : null;
+    small = json["small"] != null ? Media.fromJson(json["small"]) : null;
+    tiny = json["tiny"] != null ? Media.fromJson(json["tiny"]) : null;
   }
 
 
 }
 
-class Tiny {
+class Media {
  late String url;
-  int? width;
-  int? height;
-  int? size;
+ late int width;
+ late int height;
+ late int size;
 
-  Tiny.fromJson(dynamic json) {
+ Media.fromJson(dynamic json) {
     url = json["url"];
     width = json["width"];
     height = json["height"];
     size = json["size"];
   }
 
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["url"] = url;
-    map["width"] = width;
-    map["height"] = height;
-    map["size"] = size;
-    return map;
-  }
+
 }
 
-class Small {
- late String url;
-  int? width;
-  int? height;
-  int? size;
-
-
-  Small.fromJson(dynamic json) {
-    url = json["url"];
-    width = json["width"];
-    height = json["height"];
-    size = json["size"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["url"] = url;
-    map["width"] = width;
-    map["height"] = height;
-    map["size"] = size;
-    return map;
-  }
-}
-
-class Medium {
-  late String url;
-  int? width;
-  int? height;
-  int? size;
-
-
-  Medium.fromJson(dynamic json) {
-    url = json["url"];
-    width = json["width"];
-    height = json["height"];
-    size = json["size"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["url"] = url;
-    map["width"] = width;
-    map["height"] = height;
-    map["size"] = size;
-    return map;
-  }
-}
-
-class Large {
-  String? url;
-  int? width;
-  int? height;
-  int? size;
-
-  Large({this.url, this.width, this.height, this.size});
-
-  Large.fromJson(dynamic json) {
-    url = json["url"];
-    width = json["width"];
-    height = json["height"];
-    size = json["size"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["url"] = url;
-    map["width"] = width;
-    map["height"] = height;
-    map["size"] = size;
-    return map;
-  }
-}
