@@ -5,7 +5,6 @@ import 'package:pix/data/model/video_response.dart';
 import 'package:pix/page/image_details/image_details_page.dart';
 import 'package:pix/widget/media_controls.dart';
 import 'package:pix/widget/video_player.dart';
-
 class VideoDetailsPage extends StatefulWidget {
   final Video video;
 
@@ -114,7 +113,7 @@ class VideoPlaceHolder extends StatelessWidget {
           return Stack(
             alignment: AlignmentDirectional.center,
             fit: StackFit.passthrough,
-            children: [child, CircularProgressIndicator()],
+            children: [child, Container(child: CircularProgressIndicator())],
           );
         },
         fit: BoxFit.cover,
