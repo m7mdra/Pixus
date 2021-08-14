@@ -3,7 +3,7 @@ A cross platform flutter app with support to Android, iOS, Linux, Macos, Windows
 
 This app was only possible by god first and second the good people at https://pixabay.com
 
-Web demo available [here](https://ecstatic-sammet-c31d1d.netlify.app/)
+Web demo deployed on https://netlify.app [here](https://ecstatic-sammet-c31d1d.netlify.app/)
 
 Demo video : 
 
