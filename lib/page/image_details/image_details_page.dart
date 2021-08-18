@@ -6,8 +6,9 @@ import 'package:pix/data/model/photo_response.dart';
 
 class ImageDetailsPage extends StatefulWidget {
   final Photo photo;
+  final String heroTag;
 
-  const ImageDetailsPage({Key? key, required this.photo}) : super(key: key);
+  const ImageDetailsPage({Key? key, required this.photo,required this.heroTag}) : super(key: key);
 
   @override
   _ImageDetailsPageState createState() => _ImageDetailsPageState();
@@ -56,7 +57,7 @@ class _ImageDetailsPageState extends State<ImageDetailsPage> {
           child: Stack(
             children: [
               Hero(
-                tag: 'photo#${photo.id}',
+                tag: widget.heroTag,
                 transitionOnUserGestures: true,
                 child: PhotoView(
                   filterQuality: FilterQuality.high,
