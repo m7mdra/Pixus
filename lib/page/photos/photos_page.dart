@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pix/breakpoints.dart';
 import 'package:pix/data/model/category.dart';
 import 'package:pix/page/photos/photos_list.dart';
 import 'package:pix/widget/photos_search_filter_widget.dart';
@@ -42,7 +43,7 @@ class _PhotosPageState extends State<PhotosPage>
                 SizedBox(height: 16),
                 SizedBox(
                   child: PhotosList(category: categories[index]),
-                  height: 300,
+                  height: imageWidth(MediaQuery.of(context).size.width).value,
                 )
               ],
             ),
