@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:pix/data/model/video_response.dart';
-import 'package:pix/page/image_details/image_details_page.dart';
+import 'package:pix/widget/centered.dart';
 import 'package:pix/widget/media_controls.dart';
 import 'package:pix/widget/video_player.dart';
 class VideoDetailsPage extends StatefulWidget {
@@ -40,10 +40,7 @@ class _VideoDetailsPageState extends State<VideoDetailsPage> {
   Widget build(BuildContext context) {
     var value = _videoPlayerController.value;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
+
       backgroundColor: Colors.black,
       body: CenteredView(
         child: value.isInitialized

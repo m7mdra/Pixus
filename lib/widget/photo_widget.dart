@@ -24,29 +24,32 @@ class _PhotoWidgetState extends State<PhotoWidget> {
     var diemn = imageWidth(screenWidth);
     var width = diemn.key;
     var height = diemn.value;
-    return AnimatedContainer(
-      width: width,
-      height: height,
-      padding: const EdgeInsetsDirectional.only(end: 8),
-      duration: Duration(milliseconds: 500),
-      child: Hero(
-        transitionOnUserGestures: true,
-        tag: widget.heroTag,
-        child: OctoImage(
-          fadeInCurve: Curves.linear,
-          fadeOutCurve: Curves.linear,
-          fadeInDuration: Duration(milliseconds: 1),
-          fadeOutDuration: Duration(milliseconds: 1),
-          fit: BoxFit.cover,
-          width: width,
-          height: height,
-          image: CachedNetworkImageProvider(widget.photo.webformatURL),
-          placeholderBuilder: (context) {
-            return CachedNetworkImage(
-                imageUrl: widget.photo.previewURL,
-                fit: BoxFit.cover,
-                width: width);
-          },
+    return InkWell(
+      onTap: widget.onTap,
+      child: AnimatedContainer(
+        width: width,
+        height: height,
+        padding: const EdgeInsetsDirectional.only(end: 8),
+        duration: Duration(milliseconds: 500),
+        child: Hero(
+          transitionOnUserGestures: true,
+          tag: widget.heroTag,
+          child: OctoImage(
+            fadeInCurve: Curves.linear,
+            fadeOutCurve: Curves.linear,
+            fadeInDuration: Duration(milliseconds: 1),
+            fadeOutDuration: Duration(milliseconds: 1),
+            fit: BoxFit.cover,
+            width: width,
+            height: height,
+            image: CachedNetworkImageProvider(widget.photo.webformatURL),
+            placeholderBuilder: (context) {
+              return CachedNetworkImage(
+                  imageUrl: widget.photo.previewURL,
+                  fit: BoxFit.cover,
+                  width: width);
+            },
+          ),
         ),
       ),
     );

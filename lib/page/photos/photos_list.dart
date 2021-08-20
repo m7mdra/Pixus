@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pix/data/model/category.dart';
 import 'package:pix/data/model/photo_response.dart';
-import 'package:pix/page/image_details/image_details_page.dart';
+import 'package:pix/page/photo_details/photo_details_page.dart';
 import 'package:pix/page/photos/bloc/photos_cubit.dart';
 import 'package:pix/widget/photo_widget.dart';
 
@@ -70,7 +70,7 @@ class _PhotosListState extends State<PhotosList>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ImageDetailsPage(
+                      builder: (context) => PhotoDetailsPage(
                             photo: item,
                             heroTag: _heroTag(index),
                           )));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pix/locator.dart';
 import 'package:pix/page/home/home_page.dart';
 
@@ -14,7 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pixus',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
+      theme: ThemeData(
+        textTheme: GoogleFonts.latoTextTheme()
+      ),
       home: HomePage(),
     );
   }

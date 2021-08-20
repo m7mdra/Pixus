@@ -4,7 +4,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pix/data/model/video_response.dart';
 import 'package:pix/locator.dart';
 import 'package:pix/page/video_details/video_details_page.dart';
-import 'package:pix/widget/pixus_sliver_app_bar.dart';
+import 'package:pix/widget/pixus_app_bar.dart';
 import 'package:pix/widget/video_widget.dart';
 import 'package:pix/widget/videos_search_filter_widget.dart';
 
@@ -54,7 +54,7 @@ class _VideosPageState extends State<VideosPage>
     super.build(context);
     return CustomScrollView(
       slivers: [
-        PixusSliverAppBar(),
+        PixusAppBar(),
         BlocProvider.value(
           value: _cubit,
           child: SliverPersistentHeader(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pix/breakpoints.dart';
 import 'package:pix/data/model/category.dart';
+import 'package:pix/page/category/photo_category_page.dart';
 import 'package:pix/page/photos/photos_list.dart';
 import 'package:pix/widget/photos_search_filter_widget.dart';
 
@@ -17,42 +18,49 @@ class _PhotosPageState extends State<PhotosPage>
   Widget build(BuildContext context) {
     super.build(context);
     var categories = Category.values;
-    return ListView.builder(
-        addAutomaticKeepAlives: true,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MouseRegion()
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8,right: 8),
-                    child: Text(categories[index].name,
-                        style: Theme.of(context).textTheme.headline6),
-                  ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8,right: 8),
-                    child: TextButton(
-                        onPressed: () {},
-
+    return Scaffold(
+      body: ListView.builder(
+          padding: const EdgeInsets.only(top: 16),
+          addAutomaticKeepAlives: true,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: Text(categories[index].name,
+                          style: Theme.of(context).textTheme.headline6),
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PhotoCategoryPage(
+                                      category: categories[index])));
+                        },
                         child: Text('See more'),
-                        ),
-                  )
-                ],
-              ),
-              SizedBox(height: 8),
-              SizedBox(
-                child: PhotosList(category: categories[index]),
-                height: imageWidth(MediaQuery.of(context).size.width).value,
-              )
-            ],
-          );
-        },
-        itemCount: categories.length);
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 8),
+                SizedBox(
+                  child: PhotosList(category: categories[index]),
+                  height: imageWidth(MediaQuery.of(context).size.width).value,
+                )
+              ],
+            );
+          },
+          itemCount: categories.length),
+    );
   }
 
   @override
