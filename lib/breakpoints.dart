@@ -20,7 +20,7 @@ MapEntry<double, double> imageWidth(double screenWidth) {
     height = 280.0;
   }else{
     width = 350.0;
-    height = 300.0;
+    height = 350.0;
   }
   return MapEntry(width, height);
 }

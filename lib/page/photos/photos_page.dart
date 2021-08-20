@@ -20,33 +20,36 @@ class _PhotosPageState extends State<PhotosPage>
     return ListView.builder(
         addAutomaticKeepAlives: true,
         shrinkWrap: true,
-        padding: const EdgeInsets.all(16),
         itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(categories[index].name,
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              MouseRegion()
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8),
+                    child: Text(categories[index].name,
                         style: Theme.of(context).textTheme.headline6),
-                    Spacer(),
-                    TextButton(
+                  ),
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8),
+                    child: TextButton(
                         onPressed: () {},
 
                         child: Text('See more'),
-                        )
-                  ],
-                ),
-                SizedBox(height: 16),
-                SizedBox(
-                  child: PhotosList(category: categories[index]),
-                  height: imageWidth(MediaQuery.of(context).size.width).value,
-                )
-              ],
-            ),
+                        ),
+                  )
+                ],
+              ),
+              SizedBox(height: 8),
+              SizedBox(
+                child: PhotosList(category: categories[index]),
+                height: imageWidth(MediaQuery.of(context).size.width).value,
+              )
+            ],
           );
         },
         itemCount: categories.length);
