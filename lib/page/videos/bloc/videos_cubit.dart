@@ -15,6 +15,10 @@ class VideosCubit extends Cubit<VideosState> {
   Category _category = Category.all;
   VideoType _videoType = VideoType.all;
 
+  set category(cat) {
+    return this._category = cat;
+  }
+
   VideosCubit(this._client) : super(VideosInitial());
 
   int get page {

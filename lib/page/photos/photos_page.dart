@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:pix/data/model/photo_response.dart';
-import 'package:pix/locator.dart';
-import 'package:pix/page/image_details/image_details_page.dart';
-import 'package:pix/page/photos/bloc/photos_cubit.dart';
-import 'package:pix/page/photos/bloc/photos_state.dart';
-import 'package:pix/widget/photo_widget.dart';
+import 'package:pix/breakpoints.dart';
+import 'package:pix/data/model/category.dart';
+import 'package:pix/page/category/photo_category_page.dart';
+import 'package:pix/page/photos/photos_list.dart';
+import 'package:pix/widget/centered.dart';
 import 'package:pix/widget/photos_search_filter_widget.dart';
-import 'package:pix/widget/pixus_sliver_app_bar.dart';
-
-import 'bloc/photos_cubit.dart';
+import 'package:pix/widget/search_widget.dart';
 
 class PhotosPage extends StatefulWidget {
   const PhotosPage({Key? key}) : super(key: key);
@@ -21,76 +16,58 @@ class PhotosPage extends StatefulWidget {
 
 class _PhotosPageState extends State<PhotosPage>
     with AutomaticKeepAliveClientMixin {
-  late PagingController<int, Photo> _pagingController;
-  late PhotosCubit _cubit;
-
-  @override
-  void initState() {
-    super.initState();
-    _cubit = PhotosCubit(ServiceLocator.provide());
-    _pagingController = PagingController<int, Photo>(firstPageKey: 1);
-
-    _pagingController.addPageRequestListener((pageKey) {
-      _cubit.loadData();
-    });
-    _cubit.stream.listen((state) {
-      if (state is PhotosSuccess) {
-        _pagingController.appendPage(state.list, _cubit.page);
-      }
-      if (state is PhotosError) {
-        _pagingController.error = "Failed to load data";
-      }
-      if (state is PhotosRefresh) {
-        _pagingController.refresh();
-      }
-      if (state is PhotosEmpty) {
-        _pagingController.appendLastPage([]);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _pagingController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return CustomScrollView(
-      slivers: [
-        PixusSliverAppBar(),
-        BlocProvider.value(
-            value: _cubit,
-            child: SliverPersistentHeader(
-              delegate: SearchFilterHeaderDelegate(),
-              pinned: false,
-              floating: true,
-            )),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          sliver: PagedSliverGrid(
-            pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<Photo>(
-                itemBuilder: (context, item, index) {
-              return PhotoWidget(
-                  photo: item,
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ImageDetailsPage(photo: item)));
-                  });
-            }),
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 300,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8),
+    var categories = Category.values;
+    return Scaffold(
+      body: Column(
+        children: [
+          Flexible(
+            child: ListView.builder(
+                padding: const EdgeInsets.only(top: 16),
+                addAutomaticKeepAlives: true,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Text(categories[index].name,
+                                style: Theme.of(context).textTheme.headline6),
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PhotoCategoryPage(
+                                            category: categories[index])));
+                              },
+                              child: Text('See more'),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      SizedBox(
+                        child: PhotosList(category: categories[index]),
+                        height: imageWidth(MediaQuery.of(context).size.width).value,
+                      )
+                    ],
+                  );
+                },
+                itemCount: categories.length),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

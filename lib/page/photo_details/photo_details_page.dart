@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:pix/data/model/photo_response.dart';
+import 'package:pix/widget/centered.dart';
 
-class ImageDetailsPage extends StatefulWidget {
+class PhotoDetailsPage extends StatefulWidget {
   final Photo photo;
+  final String heroTag;
 
-  const ImageDetailsPage({Key? key, required this.photo}) : super(key: key);
+  const PhotoDetailsPage({Key? key, required this.photo,required this.heroTag}) : super(key: key);
 
   @override
-  _ImageDetailsPageState createState() => _ImageDetailsPageState();
+  _PhotoDetailsPageState createState() => _PhotoDetailsPageState();
 }
 
-class _ImageDetailsPageState extends State<ImageDetailsPage> {
+class _PhotoDetailsPageState extends State<PhotoDetailsPage> {
   bool _loadHd = false;
   late PhotoViewScaleStateController _photoViewController;
   bool _hideAll = false;
@@ -56,7 +58,7 @@ class _ImageDetailsPageState extends State<ImageDetailsPage> {
           child: Stack(
             children: [
               Hero(
-                tag: 'photo#${photo.id}',
+                tag: widget.heroTag,
                 transitionOnUserGestures: true,
                 child: PhotoView(
                   filterQuality: FilterQuality.high,
@@ -112,23 +114,6 @@ class _ImageDetailsPageState extends State<ImageDetailsPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class CenteredView extends StatelessWidget {
-  final Widget child;
-
-  const CenteredView({Key? key, required this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topCenter,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 1200),
-        child: child,
       ),
     );
   }
