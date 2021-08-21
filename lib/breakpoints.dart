@@ -8,8 +8,8 @@ MapEntry<double, double> imageWidth(double screenWidth) {
   var width = 0.0;
   var height = 0.0;
   if (screenWidth <= kMobileBreakpoint) {
-    width = 200.0;
-    height = 200.0;
+    width = 180.0;
+    height = 180.0;
   } else if (screenWidth > kMobileBreakpoint &&
       screenWidth <= kTabletBreakpoint) {
     width = 250.0;

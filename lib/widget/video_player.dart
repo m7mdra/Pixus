@@ -68,6 +68,7 @@ class VideoPlayerState extends State<VideoPlayer> {
             );
           },
           child: Stack(
+            alignment: AlignmentDirectional.center,
               children: [
                 // Video background
                 if (isReady) plugin.VideoPlayer(controller)

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pix/breakpoints.dart';
+import 'package:pix/data/model/category.dart';
 import 'package:pix/data/model/video_response.dart';
 import 'package:pix/locator.dart';
-import 'package:pix/page/video_details/video_details_page.dart';
-import 'package:pix/widget/pixus_app_bar.dart';
-import 'package:pix/widget/video_widget.dart';
+import 'package:pix/page/videos/videos_list.dart';
 import 'package:pix/widget/videos_search_filter_widget.dart';
 
 import 'bloc/videos_cubit.dart';
@@ -52,37 +51,57 @@ class _VideosPageState extends State<VideosPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return CustomScrollView(
-      slivers: [
-        PixusAppBar(),
-        BlocProvider.value(
-          value: _cubit,
-          child: SliverPersistentHeader(
-              delegate: SearchFilterHeaderDelegate(), floating: true),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          sliver: PagedSliverGrid(
-            pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<Video>(
-                itemBuilder: (context, item, index) {
-              return VideoWidget(
-                video: item,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => VideoDetailsPage(video: item)));
+    var categories = Category.values;
+
+    return Scaffold(
+      body: Column(
+        children: [
+          Flexible(
+            child: ListView.builder(
+                padding: const EdgeInsets.only(top: 16),
+                addAutomaticKeepAlives: true,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Text(categories[index].name,
+                                style: Theme.of(context).textTheme.headline6),
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: TextButton(
+                              onPressed: () {
+                                /*               Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PhotoCategoryPage(
+                                            category: categories[index])));*/
+                              },
+                              child: Text('See more'),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      SizedBox(
+                        child: VideoLists(category: categories[index]),
+                        height:
+                            imageWidth(MediaQuery.of(context).size.width).value,
+                      )
+                    ],
+                  );
                 },
-              );
-            }),
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 300,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8),
+                itemCount: categories.length),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
